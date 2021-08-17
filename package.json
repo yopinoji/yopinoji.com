@@ -37,7 +37,7 @@
     "gatsby-plugin-eslint": "3.0.0",
     "gatsby-plugin-feed": "3.11.0",
     "gatsby-plugin-google-analytics": "3.11.0",
-    "gatsby-plugin-graphql-codegen": "2.7.1",
+    "gatsby-plugin-graphql-codegen": "2.7.3",
     "gatsby-plugin-manifest": "3.11.0",
     "gatsby-plugin-offline": "4.11.0",
     "gatsby-plugin-postcss": "4.11.0",
