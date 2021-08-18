@@ -1,5 +1,7 @@
 FROM node:14
-EXPOSE 8000
 WORKDIR /usr/src
 COPY . ./
-RUN npm install
+EXPOSE 8000
+RUN npm install --platform=linux
+RUN rm -rf node_modules/sharp
+RUN npm install --arch=x64 --platform=linux sharp

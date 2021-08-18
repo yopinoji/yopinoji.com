@@ -1,19 +1,11 @@
 import React, { HtmlHTMLAttributes } from "react";
+import { style } from "./style";
 
-interface BadgeProps {
-  bgColor?: string;
-}
-
-export const Badge: React.FC<
-  HtmlHTMLAttributes<HTMLHeadElement> & BadgeProps
-> = ({ bgColor, ...props }) => {
+export const Badge: React.FC<HtmlHTMLAttributes<HTMLHeadElement>> = ({
+  ...props
+}) => {
   return (
-    <label
-      className={`px-1 m-1 text-sm text-gray-700 no-underline border border-black dark:border-gray-50 rounded whitespace-nowrap ${
-        bgColor ? bgColor : "bg-gray-50 dark:bg-gray-900 dark:text-gray-300"
-      }`}
-      {...props}
-    >
+    <label css={style} {...props}>
       {props.children}
     </label>
   );
