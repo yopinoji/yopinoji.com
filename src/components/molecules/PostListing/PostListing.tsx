@@ -1,10 +1,11 @@
 import React from "react";
 import { navigate } from "gatsby";
-import { MarkdownRemarkEdge } from "../../../gatsby-graphql";
-import { H2, SmallText } from "@Components/atoms/Typography";
+import { MarkdownRemarkEdge } from "@GatsbyTypes";
+import { H2 } from "@Components/atoms/Typography";
 import { Badge } from "@Components/atoms/Badge";
 import { Card } from "@Components/atoms/Card";
 import { useSpring, animated } from "react-spring";
+import { cardStyle, listStyle } from "./style";
 
 type PropsType = {
   data: MarkdownRemarkEdge[];
@@ -13,29 +14,27 @@ type PropsType = {
 const calc = (x: number, y: number) =>
   `perspective(600px) rotateX(${
     -(y - window.innerWidth / 2) / 20
-  }deg) rotateY(${(x - window.innerHeight / 2) / 20}deg) scale(1.1)`;
+  }deg) rotateY(${(x - window.innerHeight / 2) / 20}deg) scale(1.05)`;
 
-const PostListing: React.FC<PropsType> = ({ data, ...props }) => {
-  const [springProps, spring] = useSpring(() => ({
+const PostListing: React.FC<PropsType> = ({ data }) => {
+  const [springProps, setSpring] = useSpring(() => ({
     transform: `perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)`,
     config: { mass: 10, tension: 550, friction: 140 },
   }));
 
   const onMouseMoveHandle = (e: { clientX: number; clientY: number }) =>
-    spring.update({ transform: calc(e.clientX, e.clientY) }).start();
+    setSpring({ transform: calc(e.clientX, e.clientY) });
 
   const onMouseLeaveHandle = () =>
-    spring
-      .update({
-        transform: `perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)`,
-      })
-      .start();
+    setSpring({
+      transform: `perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)`,
+    });
 
   const handleOnClick = React.useCallback((e) => {
     navigate("/" + e);
   }, []);
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div css={listStyle}>
       {data?.map((row, index) => {
         return (
           <animated.div
@@ -46,18 +45,15 @@ const PostListing: React.FC<PropsType> = ({ data, ...props }) => {
           >
             <Card
               onClick={() => handleOnClick(String(row.node.frontmatter?.slug))}
-              className="cursor-pointer"
+              css={cardStyle}
             >
-              <div className="px-6 py-4">
-                <H2>{String(row.node.frontmatter?.title)}</H2>
-                <SmallText>{row.node.frontmatter?.date}</SmallText>
-                <Badge>{row.node.frontmatter?.category}</Badge>
-                <br />
-                <div className="flex flex-wrap">
-                  {row.node.frontmatter?.tags?.map((row, index) => (
-                    <Badge key={index}>{row}</Badge>
-                  ))}
-                </div>
+              <H2>{String(row.node.frontmatter?.title)}</H2>
+              <p>{row.node.frontmatter?.date}</p>
+              <Badge>{row.node.frontmatter?.category}</Badge>
+              <div>
+                {row.node.frontmatter?.tags?.map((row, index) => (
+                  <Badge key={index}>{row}</Badge>
+                ))}
               </div>
             </Card>
           </animated.div>

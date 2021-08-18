@@ -1,11 +1,12 @@
 version: "3"
 services:
-  yopinoji.com:
+  gatsby-blog:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: yopinoji.com
+    container_name: gatsby-blog
     tty: true
+    stdin_open: true
     command: npm run develop-in-container
     ports:
       - "8000:8000"

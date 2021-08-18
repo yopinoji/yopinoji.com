@@ -1,6 +1,6 @@
 import React from "react";
 import { useStaticQuery, graphql } from "gatsby";
-import { MarkdownRemarkFrontmatter, Query } from "../../../gatsby-graphql";
+import { MarkdownRemarkFrontmatter, Query } from "@GatsbyTypes";
 import { H2 } from "@Components/atoms/Typography";
 import { PostListing } from "@Components/molecules/PostListing";
 
@@ -11,7 +11,12 @@ type PropsType = {
 export const RelatedPosts: React.FC<PropsType> = ({ frontmatter }) => {
   const data: Query = useStaticQuery(graphql`
     query RelatedPostsQuery {
-      allMarkdownRemark {
+      allMarkdownRemark(
+        sort: { order: DESC, fields: [frontmatter___date] }
+        filter: {
+          frontmatter: { template: { eq: "posts" }, draft: { ne: true } }
+        }
+      ) {
         edges {
           node {
             id
@@ -56,7 +61,7 @@ export const RelatedPosts: React.FC<PropsType> = ({ frontmatter }) => {
   }
   return (
     <>
-      <H2>関連記事</H2>
+      <H2>Related Posts</H2>
       <PostListing data={relatedPosts} />
     </>
   );

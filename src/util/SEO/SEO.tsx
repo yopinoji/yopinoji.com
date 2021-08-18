@@ -1,20 +1,27 @@
 import React from "react";
 import Helmet from "react-helmet";
-import { SiteSiteMetadata, MarkdownRemark } from "../../gatsby-graphql";
+import { SiteSiteMetadata, MarkdownRemark } from "@GatsbyTypes";
 
 type PropsType = {
   postMeta?: MarkdownRemark | null;
   siteMetadata?: SiteSiteMetadata | null;
+  pageTitle?: string;
+  pageDescription?: string;
 };
 
-export const SEO: React.FC<PropsType> = ({ postMeta, siteMetadata }) => {
+export const SEO: React.FC<PropsType> = ({
+  postMeta,
+  siteMetadata,
+  pageTitle,
+  pageDescription,
+}) => {
   const siteName = String(siteMetadata?.title);
-  const title = postMeta
-    ? String(siteMetadata?.title) + " | " + postMeta?.frontmatter?.title
+  const title = pageTitle
+    ? String(siteMetadata?.title) + " | " + pageTitle
     : String(siteMetadata?.title);
-  const description = postMeta
-    ? String(postMeta?.frontmatter?.title)
-    : String(siteMetadata?.title);
+  const description = pageDescription
+    ? pageDescription
+    : String(postMeta?.frontmatter?.title);
   const image = siteMetadata?.image
     ? siteMetadata?.siteUrl + siteMetadata?.image
     : "";

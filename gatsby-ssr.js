@@ -3,5 +3,6 @@
  *
  * See: https://www.gatsbyjs.org/docs/ssr-apis/
  */
+"use strict";
 
 // You can delete this file if you're not using it

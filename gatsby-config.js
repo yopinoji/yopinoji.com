@@ -1,21 +1,48 @@
+/**
+ * Implement Gatsby's Config APIs in this file.
+ *
+ * See: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/
+ */
+"use strict";
+
+require("ts-node").register({
+  compilerOptions: {
+    module: "commonjs",
+    target: "esnext",
+  },
+});
+
+require("./gatsby-types");
+
+const {
+  createPages,
+  // onCreateNode,
+  // createSchemaCustomization,
+} = require("./src/gatsby-node/index");
+
+exports.createPages = createPages;
+// exports.onCreateNode = onCreateNode
+// exports.createSchemaCustomization = createSchemaCustomization
+
 module.exports = {
   siteMetadata: {
     siteUrl: `https://yopinoji.com/`,
     title: `yopinoji.com`,
     description: `A certain software engineer's notes and labs.`,
-    image: `/Yopinoji.png`,
-    author: `yopinoji`,
+    image: `/icon.png`,
+    author: `Masaki Yoshiiwa`,
     email: `yopinoji@gmail.com`,
     twitterId: ``,
-    githubId: `YopiNoji`,
+    githubId: `yopinoji`,
     googleAdSense: ``,
-    copyright: `© YopiNoji. All Rights Reserved.`,
+    copyright: `© Masaki Yoshiiwa. All Rights Reserved.`,
     lang: `ja`,
-    charSet: `utf-8`
+    charSet: `utf-8`,
   },
   plugins: [
+    `gatsby-plugin-emotion`,
     `gatsby-plugin-tsconfig-paths`,
-    'gatsby-plugin-react-helmet',
+    "gatsby-plugin-react-helmet",
     {
       resolve: "gatsby-plugin-google-analytics",
       options: {
@@ -23,13 +50,12 @@ module.exports = {
       }
     },
     {
-      resolve: 'gatsby-source-filesystem',
+      resolve: `gatsby-source-filesystem`,
       options: {
         name: `images`,
         path: `${__dirname}/src/assets`,
       },
     },
-    'gatsby-plugin-postcss',
     `gatsby-plugin-typescript`,
     {
       resolve: `gatsby-plugin-manifest`,
@@ -41,15 +67,15 @@ module.exports = {
         background_color: `#fff`,
         theme_color: `#fff`,
         display: `minimal-ui`,
-        icon: `${__dirname}/src/assets/icon.png`, // This path is relative to the root of the site.
+        icon: `static/icon.png`,
       },
     },
     {
-      resolve: 'gatsby-plugin-eslint',
+      resolve: `gatsby-plugin-eslint`,
       options: {
-        test: /\.ts$|\.tsx$/,
-        exclude: /(node_modules|.cache|public)/,
-        stages: ['develop', 'build-javascript'],
+        exclude: ['node_modules', '.cache', 'public'],
+        extensions: ['ts', 'tsx', 'js'],
+        stages: ["develop", "build-javascript"],
         options: {
           emitWarning: true,
           failOnError: false,
@@ -70,8 +96,8 @@ module.exports = {
       options: {
         rule: {
           include: /assets\/.*\.svg/,
-        }
-      }
+        },
+      },
     },
     {
       resolve: `gatsby-transformer-remark`,
@@ -94,11 +120,10 @@ module.exports = {
             options: {
               maxWidth: 800,
               withWebp: true,
-              backgroundColor: 'none',
+              backgroundColor: "none",
               quality: 60,
             },
           },
-          
         ],
       },
     },
@@ -113,9 +138,8 @@ module.exports = {
     {
       resolve: `gatsby-plugin-graphql-codegen`,
       options: {
-        fileName: `./src/gatsby-graphql.ts`,
-        codegenDelay: 200000,
-      }
+        fileName: `gatsby-types.ts`,
+      },
     },
     {
       resolve: `gatsby-plugin-feed`,
@@ -135,19 +159,25 @@ module.exports = {
         feeds: [
           {
             serialize: ({ query: { site, allMarkdownRemark } }) => {
-              return allMarkdownRemark.edges.map(edge => {
+              return allMarkdownRemark.edges.map((edge) => {
                 return Object.assign({}, edge.node.frontmatter, {
                   title: edge.node.frontmatter.title,
                   categories: edge.node.frontmatter.tags,
                   date: edge.node.frontmatter.date,
-                  url: site.siteMetadata.siteUrl + '/' + edge.node.frontmatter.slug,
-                  guid: site.siteMetadata.siteUrl + '/' + edge.node.frontmatter.slug,
+                  url:
+                    site.siteMetadata.siteUrl +
+                    "/" +
+                    edge.node.frontmatter.slug,
+                  guid:
+                    site.siteMetadata.siteUrl +
+                    "/" +
+                    edge.node.frontmatter.slug,
                   custom_elements: [
                     { "content:encoded": edge.node.html },
-                    { author: '' }
+                    { author: "" },
                   ],
-                })
-              })
+                });
+              });
             },
             query: `
               {
@@ -176,4 +206,4 @@ module.exports = {
       },
     },
   ],
-}
+};
