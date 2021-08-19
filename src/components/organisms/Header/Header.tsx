@@ -39,8 +39,8 @@ const Header: React.FC<HeaderProps> = ({ siteMetadata, pageTitle }) => {
       to: "/categories",
       subMenuItems: [
         {
-          name: "Note",
-          to: "/category/Note",
+          name: "Poem",
+          to: "/category/Poem",
         },
         {
           name: "Tech",
